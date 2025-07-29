@@ -8,9 +8,9 @@ This project demonstrates basic Eulerian Video Magnification (EVM) techniques in
 - `numpy`
 - `scipy`
 
-Install the dependencies with:
+All Python dependencies are listed in `requirements.txt`. Install them with:
 ```bash
-pip install opencv-python numpy scipy
+pip install -r requirements.txt
 ```
 
 Sample videos are provided in the `sample_videos/` directory (`camera.mp4`, `subway.mp4`, and `wrist.mp4`) to test the scripts and observe the effect of motion amplification.
