@@ -99,3 +99,13 @@ if uploaded and st.button("Process video"):
             )
             st.video(f)
 
+# Allow the script to be run directly with `python web_gui.py`
+if __name__ == "__main__":
+    import sys
+    from streamlit.web import cli as stcli
+
+    # Invoke the Streamlit CLI programmatically so no separate
+    # `streamlit` command needs to be available on the PATH.
+    sys.argv = ["streamlit", "run", sys.argv[0]]
+    sys.exit(stcli.main())
+
