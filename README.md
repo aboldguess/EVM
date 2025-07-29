@@ -30,10 +30,19 @@ The processed video will be saved next to the source file with `_amplified` appe
 
 ## Web interface
 
-For an interactive GUI in your browser, run the Streamlit app:
+For an interactive GUI in your browser, run the Streamlit app. Using
+`python -m` ensures the module is launched even if the `streamlit`
+executable is not on your system `PATH`:
 
 ```bash
-streamlit run web_gui.py
+python -m streamlit run web_gui.py
 ```
 
-Upload a video, adjust the parameters in the sidebar, and download the amplified result directly from the page.
+If you prefer, you can also execute the script directly with Python:
+
+```bash
+python web_gui.py
+```
+
+Upload a video, adjust the parameters in the sidebar, and download the
+amplified result directly from the page.
