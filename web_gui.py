@@ -103,9 +103,14 @@ if uploaded and st.button("Process video"):
 if __name__ == "__main__":
     import sys
     from streamlit.web import cli as stcli
+    from streamlit import runtime
 
-    # Invoke the Streamlit CLI programmatically so no separate
-    # `streamlit` command needs to be available on the PATH.
-    sys.argv = ["streamlit", "run", sys.argv[0]]
-    sys.exit(stcli.main())
+    # When running the script directly with `python web_gui.py` there is no
+    # Streamlit runtime yet, so we emulate the `streamlit run` command.
+    # However, when the file is executed via `streamlit run web_gui.py`, a
+    # runtime already exists and starting another would raise
+    # "Runtime instance already exists!". The check below prevents that.
+    if not runtime.exists():
+        sys.argv = ["streamlit", "run", sys.argv[0]]
+        sys.exit(stcli.main())
 
