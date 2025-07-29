@@ -27,3 +27,13 @@ python amp_color.py       # for color amplification
 python amp_grayscale.py   # for grayscale amplification
 ```
 The processed video will be saved next to the source file with `_amplified` appended to its name.
+
+## Web interface
+
+For an interactive GUI in your browser, run the Streamlit app:
+
+```bash
+streamlit run web_gui.py
+```
+
+Upload a video, adjust the parameters in the sidebar, and download the amplified result directly from the page.
