@@ -2,12 +2,18 @@ import cv2
 import numpy as np
 from scipy.signal import butter, filtfilt
 
-# Input and output video filenames
+# Ask the user for the video file path
 input_video = input("Video path: ")
+
+# Output filename for the amplified result
 output_video = input_video.split(".")[0] + "_amplified" + ".mp4"
-amplification_factor = 50  # Adjust this as needed for clear but smooth amplification
-low_freq = 0.4  # Lower bound for bandpass filter (in Hz)
-high_freq = 1.0  # Upper bound for bandpass filter (in Hz)
+
+# Amplification factor controls how strong the motion exaggeration is
+amplification_factor = 50  # Adjust for clearer but smooth amplification
+
+# Frequency band (in Hz) that contains the motion to highlight
+low_freq = 0.4
+high_freq = 1.0
 
 # Load the video
 cap = cv2.VideoCapture(input_video)
@@ -30,6 +36,7 @@ while cap.isOpened():
     ret, frame = cap.read()
     if not ret:
         break
+    # Convert each frame to grayscale for processing
     gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     frames.append(gray_frame)
 
@@ -38,6 +45,7 @@ frames = np.array(frames, dtype='float32')
 
 # Apply temporal filtering to isolate vibrations within frequency bounds
 def bandpass_filter(data, lowcut, highcut, fs, order=2):
+    """Apply a Butterworth bandpass filter along the time axis."""
     nyquist = 0.5 * fs
     low = lowcut / nyquist
     high = highcut / nyquist
