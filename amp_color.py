@@ -3,13 +3,20 @@ import numpy as np
 from scipy.signal import butter, filtfilt
 
 
+# Path to the video file to process. A simple input prompt keeps the script self contained.
 input_video = input("Video path: ")
+
+# Output filename is derived from the input with `_amplified` appended
 output_video = input_video.split(".")[0] + "_amplified" + ".mp4"
-amplification_factor = 30 
-low_freq = 0.4 
+
+# Amount of motion amplification to apply
+amplification_factor = 30
+
+# Frequency band (in Hz) that contains the subtle motions we want to enhance
+low_freq = 0.4
 high_freq = 1.0
 
-# Load the video
+# Open the video file
 cap = cv2.VideoCapture(input_video)
 if not cap.isOpened():
     print("Error: Could not open video file.")
@@ -20,23 +27,25 @@ frame_width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
 frame_height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
 fps = int(cap.get(cv2.CAP_PROP_FPS))
 
-# Video writer setup for saving amplified output
+# Video writer used to save the amplified output
 fourcc = cv2.VideoWriter_fourcc(*'mp4v')
 out = cv2.VideoWriter(output_video, fourcc, fps, (frame_width, frame_height))
 
-# Read all frames into a list for processing
+# Read each frame into a list for batch processing
 frames = []
 while cap.isOpened():
     ret, frame = cap.read()
     if not ret:
         break
-    frames.append(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))  # Keep frames in color
+    # Convert to RGB to keep color information consistent
+    frames.append(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
 
 cap.release()
 frames = np.array(frames, dtype='float32')
 
 # Apply temporal filtering to isolate vibrations within frequency bounds
 def bandpass_filter(data, lowcut, highcut, fs, order=2):
+    """Apply a Butterworth bandpass filter along the time axis."""
     nyquist = 0.5 * fs
     low = lowcut / nyquist
     high = highcut / nyquist
